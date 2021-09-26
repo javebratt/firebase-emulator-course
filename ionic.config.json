@@ -1,7 +1,4 @@
 {
   "name": "firebase-emulator",
-  "integrations": {
-    "capacitor": {}
-  },
   "type": "angular"
 }
