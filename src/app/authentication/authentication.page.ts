@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { UserCredential } from './authentication.model';
 import { AuthenticationService } from './authentication.service';
+import { Functions, httpsCallable } from '@angular/fire/functions';
+
 @Component({
   selector: 'app-authentication',
   templateUrl: './authentication.page.html',
@@ -16,7 +18,8 @@ export class AuthenticationPage implements OnInit {
     private readonly loadingCtrl: LoadingController,
     private readonly alertCtrl: AlertController,
     private readonly auth: AuthenticationService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly functions: Functions
   ) {}
 
   ngOnInit() {
@@ -30,6 +33,14 @@ export class AuthenticationPage implements OnInit {
       this.pageTitle = 'Reset your Password';
       this.actionButtonText = 'Reset Password';
     }
+  }
+
+  sayHelloToFunction() {
+    const sayHello = httpsCallable(this.functions, 'sayHello');
+
+    sayHello().then((result) => {
+      console.log(result);
+    });
   }
 
   handleUserCredentials(userCredentials: Partial<UserCredential>) {
@@ -56,7 +67,9 @@ export class AuthenticationPage implements OnInit {
       this.router.navigateByUrl('');
     } catch (error) {
       await loading.dismiss();
-      this.displayAlertMessage(`Either we couldn't find your user or there was a problem with the password`);
+      this.displayAlertMessage(
+        `Either we couldn't find your user or there was a problem with the password`
+      );
     }
   }
 

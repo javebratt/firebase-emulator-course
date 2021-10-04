@@ -15,7 +15,10 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(private readonly auth: Auth, private readonly firestore: Firestore) {}
+  constructor(
+    private readonly auth: Auth,
+    private readonly firestore: Firestore
+  ) {}
 
   getUser(): User {
     return this.auth.currentUser;
@@ -31,9 +34,13 @@ export class AuthenticationService {
 
   async signup(email: string, password: string): Promise<UserCredential> {
     try {
-      const newUserCredential: UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const newUserCredential: UserCredential =
+        await createUserWithEmailAndPassword(this.auth, email, password);
 
-      const userProfileDocumentReference = doc(this.firestore, `users/${newUserCredential.user.uid}`);
+      const userProfileDocumentReference = doc(
+        this.firestore,
+        `users/${newUserCredential.user.uid}`
+      );
 
       await setDoc(userProfileDocumentReference, { email });
 
